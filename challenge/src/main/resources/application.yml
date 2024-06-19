@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: challenge
+  datasource:
+    url: jdbc:postgresql://localhost:5432/challenge
+    username: postgres
+    password: admin
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: debug
+        type:
+          descriptor:
+            sql: trace
