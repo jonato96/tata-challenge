@@ -4,50 +4,60 @@ DROP DATABASE IF EXISTS challenge;
 
 CREATE DATABASE challenge;
 
-CREATE TABLE person (
-	person_id BIGSERIAL NOT NULl,
-	person_name varchar(50) NOT NULL,
-	gender varchar(50) NOT NULL,
-	age INT,
-	identification varchar(13),
-	address varchar(100),
-	phone varchar(10),
-	PRIMARY KEY(person_id)
+create type account_type as enum(
+	'SAVING',
+	'CHECKING'
 );
 
-CREATE TABLE client (	
-	client_id BIGSERIAL NOT NULL,
-	person_id BIGSERIAL NOT NULL,
-	password varchar(100) NOT NULL,
-	status BOOLEAN NOT NULL,
-	PRIMARY KEY(client_id),
-	FOREIGN KEY (person_id) REFERENCES person(person_id)
+create type transaction_type as enum(
+	'DEBIT',
+	'CREDIT'
 );
 
-CREATE TABLE account (
-	id BIGSERIAL NOT NULL,
-	client_id BIGSERIAL NOT NULL,
-	account_number varchar(10),
-    account_type VARCHAR(50) NOT NULL,
-    initial_balance DECIMAL(15, 2) NOT NULL,
-    status BOOLEAN NOT NULL,
-	PRIMARY KEY(id),
-	FOREIGN KEY (client_id) REFERENCES client(client_id)
+CREATE TABLE person(
+                       id int NOT NULL,
+                       name varchar(50) NOT NULL,
+                       gender varchar(50) NOT NULL,
+                       age integer NOT NULL,
+                       identification varchar(13) NOT NULL,
+                       address varchar(100) NOT NULL,
+                       phone varchar(10) NOT NULL,
+                       PRIMARY KEY (id),
+                       unique(identification)
 );
 
-CREATE TABLE movement (
-	id BIGSERIAL NOT NULL,
-	account_id BIGSERIAL NOT NULL,
-    date DATE NOT NULL,
-    movement_type VARCHAR(50) NOT NULL,
-    amount DECIMAL(15, 2) NOT NULL,
-    balance DECIMAL(15, 2) NOT NULL,
-	status BOOLEAN NOT NULL,
-	PRIMARY KEY(id),
-	FOREIGN KEY (account_id) REFERENCES account(id)
+CREATE TABLE client
+(
+    client_id int NOT NULL,
+    password character varying(50) NOT NULL,
+    status boolean NOT NULL,
+    PRIMARY KEY (client_id),
+    CONSTRAINT fk_person_client FOREIGN KEY (client_id) REFERENCES person (id)
 );
 
+CREATE TABLE account
+(
+    id int NOT NULL,
+    "number" character varying(10) NOT NULL,
+    type account_type NOT NULL,
+    balance numeric(10, 2) NOT NULL,
+    state boolean NOT NULL,
+    client_id int NOT NULL,
+    PRIMARY KEY (id),
+    unique("number"),
+    CONSTRAINT fk_account_client FOREIGN KEY (client_id) REFERENCES client (client_id)
+);
 
-
-
+create table transaction(
+                            id int not null,
+                            created_date date not null,
+                            type transaction_type not null,
+                            amount numeric(10,2) not null,
+                            before_balance numeric(10,2) not null,
+                            after_balance numeric(10,2) not null,
+                            account_id int not null,
+                            state boolean not null,
+                            primary key(id),
+                            constraint fk_transaction_account foreign key (account_id) references account(id)
+)
     

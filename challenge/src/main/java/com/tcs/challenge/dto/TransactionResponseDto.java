@@ -1,6 +1,6 @@
 package com.tcs.challenge.dto;
 
-import com.tcs.challenge.helper.MovementType;
+import com.tcs.challenge.helper.TransactionType;
 import lombok.Builder;
 import lombok.Data;
 
@@ -9,9 +9,9 @@ import java.time.LocalDate;
 
 @Builder
 @Data
-public class MovementResponseDto {
+public class TransactionResponseDto {
     private LocalDate date;
-    private MovementType movementType;
+    private TransactionType transactionType;
     private BigDecimal amount;
     private BigDecimal balance;
     private boolean status;

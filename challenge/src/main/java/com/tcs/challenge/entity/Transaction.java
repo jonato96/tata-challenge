@@ -1,6 +1,6 @@
 package com.tcs.challenge.entity;
 
-import com.tcs.challenge.helper.MovementType;
+import com.tcs.challenge.helper.TransactionType;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -9,32 +9,35 @@ import java.time.LocalDate;
 
 @Entity
 @Data
-@Table(name = "movement")
-public class Movement {
+@Table(name = "transaction")
+public class Transaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "date")
+    @Column(name = "created_date")
     private LocalDate date;
 
-    @Column(name = "movement_type")
+    @Column(name = "type")
     @Enumerated(EnumType.STRING)
-    private MovementType movementType;
+    private TransactionType type;
 
     @Column(name= "amount")
     private BigDecimal amount;
 
-    @Column(name="balance")
-    private BigDecimal balance;
+    @Column(name = "after_balance")
+    private BigDecimal afterBalance;
+
+    @Column(name = "before_balance")
+    private BigDecimal beforeBalance;
+
+    @Column(name = "state")
+    private boolean state;
 
     @Column(name = "account_id")
     private Long accountId;
-
-    @Column(name = "status")
-    private boolean status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id", insertable = false, updatable = false)

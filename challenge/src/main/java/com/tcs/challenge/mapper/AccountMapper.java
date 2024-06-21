@@ -11,18 +11,18 @@ public class AccountMapper {
     public AccountResponseDto toResponseDto(Account account) {
         return AccountResponseDto.builder()
                 .accountNumber(account.getAccountNumber())
-                .accountType(account.getAccountType())
-                .status(account.isStatus())
-                .initialBalance(account.getInitialBalance())
+                .accountType(account.getType())
+                .status(account.isState())
+                .initialBalance(account.getBalance())
                 .build();
     }
 
     public Account toAccount(AccountDto accountDto) {
         Account account = new Account();
         account.setId(accountDto.getId());
-        account.setAccountType(accountDto.getAccountType());
-        account.setStatus(accountDto.isStatus());
-        account.setInitialBalance(accountDto.getInitialBalance());
+        account.setType(accountDto.getAccountType());
+        account.setState(accountDto.isStatus());
+        account.setBalance(accountDto.getInitialBalance());
         account.setClientId(accountDto.getClientId());
         account.setAccountNumber(accountDto.getAccountNumber());
         return account;

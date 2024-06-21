@@ -1,10 +1,22 @@
 package com.tcs.challenge.entity;
 
-import jakarta.persistence.*;
+import com.tcs.challenge.helper.AccountType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Data
@@ -16,17 +28,18 @@ public class Account {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "account_number")
+    @Column(name = "number")
     private String accountNumber;
 
-    @Column(name = "account_type")
-    private String accountType;
+    @Column(name = "type")
+    @Enumerated(EnumType.STRING)
+    private AccountType type;
 
-    @Column(name = "initial_balance")
-    private BigDecimal initialBalance;
+    @Column(name = "balance")
+    private BigDecimal balance;
 
-    @Column(name = "status")
-    private boolean status;
+    @Column(name = "state")
+    private boolean state;
 
     @Column(name = "client_id")
     private Long clientId;
@@ -36,6 +49,6 @@ public class Account {
     private Client client;
 
     @OneToMany(mappedBy = "account")
-    private Set<Movement> movements;
+    private List<Transaction> transactions;
 
 }
