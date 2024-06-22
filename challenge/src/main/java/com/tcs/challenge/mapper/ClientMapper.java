@@ -1,20 +1,20 @@
 package com.tcs.challenge.mapper;
 
 import com.tcs.challenge.dto.ClientDto;
+import com.tcs.challenge.dto.ClientResponseDto;
 import com.tcs.challenge.entity.Client;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ClientMapper {
-    public ClientDto toClientDto(Client client){
-        return ClientDto.builder()
+    public ClientResponseDto toClientDto(Client client){
+        return ClientResponseDto.builder()
                 .name(client.getName())
                 .gender(client.getGender())
                 .age(client.getAge())
                 .identification(client.getIdentification())
                 .address(client.getAddress())
                 .phone(client.getPhone())
-                .password(client.getPassword())
                 .status(client.isStatus())
                 .build();
     }

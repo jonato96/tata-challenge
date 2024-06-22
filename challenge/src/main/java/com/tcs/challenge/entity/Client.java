@@ -1,13 +1,6 @@
 package com.tcs.challenge.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,6 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Table(name = "client")
+@PrimaryKeyJoinColumn(name = "client_id")
 public class Client extends Person {
 
     @Id

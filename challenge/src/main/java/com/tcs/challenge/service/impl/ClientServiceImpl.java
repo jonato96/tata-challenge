@@ -1,6 +1,7 @@
 package com.tcs.challenge.service.impl;
 
 import com.tcs.challenge.dto.ClientDto;
+import com.tcs.challenge.dto.ClientResponseDto;
 import com.tcs.challenge.entity.Client;
 import com.tcs.challenge.exception.GeneralException;
 import com.tcs.challenge.mapper.ClientMapper;
@@ -21,7 +22,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     @Transactional
-    public ClientDto save(ClientDto requestClient) throws GeneralException {
+    public ClientResponseDto save(ClientDto requestClient) throws GeneralException {
         try {
             Client client = clientRepository.save(clientMapper.toClient(requestClient));
             return clientMapper.toClientDto(client);
@@ -39,7 +40,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     @Transactional(readOnly = true)
-    public ClientDto findById(Long id) throws GeneralException {
+    public ClientResponseDto findById(Long id) throws GeneralException {
         Optional<Client> clientFind = clientRepository.findById(id);
         if (clientFind.isEmpty()) throw new GeneralException("Client not found with id: " + id);
         return clientMapper.toClientDto(clientFind.get());

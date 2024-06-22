@@ -1,6 +1,7 @@
 package com.tcs.challenge;
 
 import com.tcs.challenge.dto.ClientDto;
+import com.tcs.challenge.dto.ClientResponseDto;
 import com.tcs.challenge.entity.Client;
 import com.tcs.challenge.exception.GeneralException;
 import com.tcs.challenge.mapper.ClientMapper;
@@ -36,12 +37,12 @@ class ClientServiceImplTest {
         mockClient.setId(1L);
         // Mock Behavior
         Mockito.when(clientRepository.findById(mockId)).thenReturn(Optional.of(mockClient));
-        Mockito.when(clientMapper.toClientDto(mockClient)).thenReturn(ClientDto.builder().id(1L).build());
+        Mockito.when(clientMapper.toClientDto(mockClient)).thenReturn(ClientResponseDto.builder().name("client").build());
         // Call Service
-        ClientDto result = clientService.findById(mockId);
+        ClientResponseDto result = clientService.findById(mockId);
         // Verify Results
         Mockito.verify(clientRepository, Mockito.times(1)).findById(mockId);
-        assertEquals(1L, result.getId());
+        assertEquals("client", result.getName());
 
     }
 
