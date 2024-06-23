@@ -19,11 +19,6 @@ import java.util.List;
 @PrimaryKeyJoinColumn(name = "client_id")
 public class Client extends Person {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "client_id")
-    private Long id;
-
     @Column(name = "password")
     private String password;
 
