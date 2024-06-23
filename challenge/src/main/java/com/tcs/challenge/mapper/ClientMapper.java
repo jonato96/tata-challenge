@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 public class ClientMapper {
     public ClientResponseDto toClientDto(Client client){
         return ClientResponseDto.builder()
+                .id(client.getId())
                 .name(client.getName())
                 .gender(client.getGender())
                 .age(client.getAge())
@@ -28,7 +29,6 @@ public class ClientMapper {
         client.setIdentification(clientDto.getIdentification());
         client.setAddress(clientDto.getAddress());
         client.setPassword(clientDto.getPassword());
-        client.setStatus(clientDto.isStatus());
         client.setPhone(clientDto.getPhone());
         return client;
     }

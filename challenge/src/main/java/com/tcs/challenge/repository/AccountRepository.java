@@ -11,11 +11,13 @@ import java.math.BigDecimal;
 public interface AccountRepository extends JpaRepository<Account, Long> {
 
     @Modifying
-    @Query("UPDATE Account a SET a.state = false WHERE a.id = :id")
+    @Query("UPDATE Account a SET a.status = false WHERE a.id = :id")
     void inactivateAccount(@Param("id") Long id);
 
     @Modifying
     @Query("UPDATE Account a SET a.balance = :balance WHERE a.id = :id")
     void updateBalance(@Param("balance") BigDecimal balance, @Param("id") Long id);
+
+    boolean existsByIdAndStatusTrue(Long id);
 
 }

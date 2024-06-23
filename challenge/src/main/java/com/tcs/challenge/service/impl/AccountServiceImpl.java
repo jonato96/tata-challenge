@@ -3,6 +3,7 @@ package com.tcs.challenge.service.impl;
 import com.tcs.challenge.dto.AccountDto;
 import com.tcs.challenge.dto.AccountResponseDto;
 import com.tcs.challenge.entity.Account;
+import com.tcs.challenge.entity.Client;
 import com.tcs.challenge.exception.GeneralException;
 import com.tcs.challenge.mapper.AccountMapper;
 import com.tcs.challenge.repository.AccountRepository;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,11 +27,14 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     public AccountResponseDto save(AccountDto requestAccount) throws GeneralException {
         try {
-            clientService.findById(requestAccount.getClientId());
-            Account account = accountRepository.save(accountMapper.toAccount(requestAccount));
-            return accountMapper.toResponseDto(account);
+            Client clientForAccount = clientService.validateClient(requestAccount.getClientId());
+            Account accountToSave = accountMapper.toAccount(requestAccount);
+            accountToSave.setStatus(true);
+            accountToSave.setClient(clientForAccount);
+            Account accountCreated = accountRepository.save(accountToSave);
+            return accountMapper.toResponseDto(accountCreated);
         } catch (Exception ex){
-            throw new GeneralException(ex, ex.getMessage());
+            throw new GeneralException(ex.getMessage());
         }
     }
 
@@ -44,15 +47,26 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional
     public void delete(Long id) throws GeneralException {
-        if (!accountRepository.existsById(id)) throw new GeneralException("Account not found with id: " + id);
+        validateExistsAndIsActive(id);
         accountRepository.inactivateAccount(id);
     }
 
     @Override
     @Transactional(readOnly = true)
     public AccountResponseDto findById(Long id) throws GeneralException {
-        Optional<Account> accountFind = accountRepository.findById(id);
-        if (accountFind.isEmpty()) throw new GeneralException("Account not found with id: " + id);
-        return accountMapper.toResponseDto(accountFind.get());
+        Account accountFind = accountRepository.findById(id).orElseThrow( () -> new GeneralException("Account not found with id: " + id) );
+        accountFind.setClient(accountFind.getClient());
+        return accountMapper.toResponseDto(accountFind);
+    }
+
+    @Override
+    public Account validateAccount(Long id) throws GeneralException {
+        validateExistsAndIsActive(id);
+        return accountRepository.findById(id).orElse(null);
+    }
+
+    private void validateExistsAndIsActive(Long id) throws GeneralException {
+        boolean result = accountRepository.existsByIdAndStatusTrue(id);
+        if (!result) throw new GeneralException("Account not found with id: " + id + ", or is already inactive");
     }
 }

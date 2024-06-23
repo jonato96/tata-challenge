@@ -44,7 +44,7 @@ public class Transaction {
     private BigDecimal beforeBalance;
 
     @Column(name = "state")
-    private boolean state;
+    private boolean status;
 
     @Column(name = "account_id")
     private Long accountId;

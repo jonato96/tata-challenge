@@ -12,21 +12,12 @@ import lombok.NoArgsConstructor;
 public class ClientDto {
 
     private Long id;
-
     private String name;
-
     private String gender;
-
     private Integer age;
-
     private String identification;
-
     private String address;
-
     private String phone;
-
     private String password;
-
-    private boolean status;
 
 }

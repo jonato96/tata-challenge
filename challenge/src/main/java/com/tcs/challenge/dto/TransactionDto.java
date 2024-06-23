@@ -7,8 +7,9 @@ import java.math.BigDecimal;
 
 @Data
 public class TransactionDto {
-    private TransactionType transactionType;
+
+    private TransactionType type;
     private BigDecimal amount;
     private Long accountId;
-    private boolean status;
+
 }

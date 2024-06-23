@@ -11,8 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class ClientServiceImpl implements ClientService {
@@ -24,25 +22,53 @@ public class ClientServiceImpl implements ClientService {
     @Transactional
     public ClientResponseDto save(ClientDto requestClient) throws GeneralException {
         try {
-            Client client = clientRepository.save(clientMapper.toClient(requestClient));
-            return clientMapper.toClientDto(client);
+            Client clientToCreate = clientMapper.toClient(requestClient);
+            clientToCreate.setStatus(true);
+            Client clientCreated = clientRepository.save(clientToCreate);
+            return clientMapper.toClientDto(clientCreated);
         } catch (Exception ex){
-            throw new GeneralException(ex, ex.getMessage());
+            throw new GeneralException(ex.getMessage());
+        }
+    }
+
+    @Override
+    public ClientResponseDto edit(ClientDto requestClient) throws GeneralException {
+        try {
+            Client clientFind = clientRepository.findByIdAndStatusTrue(requestClient.getId())
+                    .orElseThrow( () -> new GeneralException("Client not found with id: " + requestClient.getId() + ", or is already inactive"));
+            Client clientToEdit = clientMapper.toClient(requestClient);
+            clientToEdit.setStatus(clientFind.isStatus());
+            Client clientCreated = clientRepository.save(clientToEdit);
+            return clientMapper.toClientDto(clientCreated);
+        } catch (Exception ex){
+            throw new GeneralException(ex.getMessage());
         }
     }
 
     @Override
     @Transactional
     public void delete(Long id) throws GeneralException {
-        if (!clientRepository.existsById(id)) throw new GeneralException("Client not found with id: " + id);
+        validateExistsAndIsActive(id);
         clientRepository.inactivateClient(id);
     }
 
     @Override
     @Transactional(readOnly = true)
     public ClientResponseDto findById(Long id) throws GeneralException {
-        Optional<Client> clientFind = clientRepository.findById(id);
-        if (clientFind.isEmpty()) throw new GeneralException("Client not found with id: " + id);
-        return clientMapper.toClientDto(clientFind.get());
+        Client clientFind = clientRepository.findById(id)
+                .orElseThrow( () -> new GeneralException("Client not found with id: " + id));
+        return clientMapper.toClientDto(clientFind);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Client validateClient(Long id) throws GeneralException {
+        validateExistsAndIsActive(id);
+        return clientRepository.findById(id).orElse(null);
+    }
+
+    private void validateExistsAndIsActive(Long id) throws GeneralException {
+        boolean result = clientRepository.existsByIdAndStatusTrue(id);
+        if (!result) throw new GeneralException("Client not found with id: " + id + ", or is already inactive");
     }
 }

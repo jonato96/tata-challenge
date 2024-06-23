@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -36,13 +35,13 @@ public class ClientController {
 
     @PutMapping
     public ResponseEntity<ClientResponseDto> edit(@RequestBody ClientDto clientDto) throws GeneralException {
-        return ResponseEntity.ok(clientService.save(clientDto));
+        return ResponseEntity.ok(clientService.edit(clientDto));
     }
 
-    @DeleteMapping
-    public ResponseEntity<String> deactivate(@RequestParam("id") Long id) throws GeneralException {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deactivate(@PathVariable("id") Long id) throws GeneralException {
         clientService.delete(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Deleted");
+        return ResponseEntity.ok("Client with id: " + id + " has been inactivated");
     }
 
 }

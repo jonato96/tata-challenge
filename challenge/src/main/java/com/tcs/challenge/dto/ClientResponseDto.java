@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ClientResponseDto {
 
+    private Long id;
     private String name;
     private String gender;
     private Integer age;

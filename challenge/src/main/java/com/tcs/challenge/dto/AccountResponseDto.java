@@ -1,16 +1,18 @@
 package com.tcs.challenge.dto;
 
 import com.tcs.challenge.helper.AccountType;
-import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;
 
-@Builder
 @Data
 public class AccountResponseDto {
+
+    private Long id;
     private String accountNumber;
-    private AccountType accountType;
-    private BigDecimal initialBalance;
+    private AccountType type;
+    private BigDecimal balance;
     private boolean status;
+    private String clientName;
+
 }

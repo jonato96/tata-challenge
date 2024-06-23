@@ -9,26 +9,30 @@ create type account_type as enum(
 	'CHECKING'
 );
 
+CREATE CAST (varchar AS account_type) WITH INOUT AS IMPLICIT;
+
 create type transaction_type as enum(
 	'DEBIT',
 	'CREDIT'
 );
 
+CREATE CAST (varchar AS transaction_type) WITH INOUT AS IMPLICIT;
+
 CREATE TABLE person(
-                       id int NOT NULL,
-                       name varchar(50) NOT NULL,
-                       gender varchar(50) NOT NULL,
-                       age integer NOT NULL,
-                       identification varchar(13) NOT NULL,
-                       address varchar(100) NOT NULL,
-                       phone varchar(10) NOT NULL,
-                       PRIMARY KEY (id),
-                       unique(identification)
+   id serial NOT NULL,
+   name varchar(50) NOT NULL,
+   gender varchar(50) NOT NULL,
+   age integer NOT NULL,
+   identification varchar(13) NOT NULL,
+   address varchar(100) NOT NULL,
+   phone varchar(10) NOT NULL,
+   PRIMARY KEY (id),
+   unique(identification)
 );
 
 CREATE TABLE client
 (
-    client_id int NOT NULL,
+    client_id serial NOT NULL,
     password character varying(50) NOT NULL,
     status boolean NOT NULL,
     PRIMARY KEY (client_id),
@@ -37,7 +41,7 @@ CREATE TABLE client
 
 CREATE TABLE account
 (
-    id int NOT NULL,
+    id serial NOT NULL,
     "number" character varying(10) NOT NULL,
     type account_type NOT NULL,
     balance numeric(10, 2) NOT NULL,
@@ -49,7 +53,7 @@ CREATE TABLE account
 );
 
 create table transaction(
-                            id int not null,
+                            serial int not null,
                             created_date date not null,
                             type transaction_type not null,
                             amount numeric(10,2) not null,

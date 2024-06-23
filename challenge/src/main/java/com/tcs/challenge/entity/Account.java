@@ -14,6 +14,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
+import org.hibernate.annotations.JdbcType;
+import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -31,15 +33,15 @@ public class Account {
     @Column(name = "number")
     private String accountNumber;
 
-    @Column(name = "type")
     @Enumerated(EnumType.STRING)
+    @Column(name = "type")
     private AccountType type;
 
     @Column(name = "balance")
     private BigDecimal balance;
 
     @Column(name = "state")
-    private boolean state;
+    private boolean status;
 
     @Column(name = "client_id")
     private Long clientId;

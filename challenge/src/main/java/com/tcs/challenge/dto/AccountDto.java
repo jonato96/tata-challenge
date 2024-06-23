@@ -7,10 +7,12 @@ import java.math.BigDecimal;
 
 @Data
 public class AccountDto {
+
     private Long id;
     private Long clientId;
     private String accountNumber;
-    private AccountType accountType;
-    private BigDecimal initialBalance;
+    private AccountType type;
+    private BigDecimal balance;
     private boolean status;
+
 }
