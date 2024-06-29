@@ -1,13 +1,23 @@
 package com.tcs.transaction.controller;
 
+import com.tcs.transaction.dto.ReportResponseDto;
 import com.tcs.transaction.dto.TransactionDto;
 import com.tcs.transaction.dto.TransactionResponseDto;
 import com.tcs.transaction.exception.GeneralException;
 import com.tcs.transaction.service.TransactionService;
+import com.tcs.transaction.util.ReportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -16,6 +26,7 @@ import java.util.List;
 public class TransactionController {
 
     private final TransactionService transactionService;
+    private final ReportService reportService;
 
     @GetMapping("/{id}")
     public ResponseEntity<TransactionResponseDto> findById(@PathVariable("id") Long id) throws GeneralException {
@@ -38,4 +49,15 @@ public class TransactionController {
         transactionService.delete(id);
         return ResponseEntity.ok("Transaction with id: " + id + " has been inactivated");
     }
+
+    @GetMapping("report")
+    public ResponseEntity<List<ReportResponseDto>> generateReport(
+            @RequestParam("clientId") Long clientId,
+            @RequestParam("startDate") LocalDate startDate,
+            @RequestParam("endDate") LocalDate endDate) throws GeneralException {
+
+        return ResponseEntity.ok(reportService.generateReport(clientId, startDate, endDate));
+
+    }
+
 }

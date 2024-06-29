@@ -6,6 +6,7 @@ import com.tcs.transaction.entity.Account;
 import com.tcs.transaction.exception.GeneralException;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public interface AccountService {
     AccountResponseDto save(AccountDto requestAccount) throws GeneralException;
@@ -13,4 +14,5 @@ public interface AccountService {
     void delete(Long id) throws GeneralException;
     AccountResponseDto findById(Long id) throws GeneralException;
     Account validateAccount(Long id) throws GeneralException;
+    List<Account> findByClientId(Long clientId);
 }

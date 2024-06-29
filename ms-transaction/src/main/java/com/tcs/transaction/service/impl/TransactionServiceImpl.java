@@ -77,6 +77,11 @@ public class TransactionServiceImpl implements TransactionService {
 
     }
 
+    @Override
+    public List<Transaction> findByAccountAndDates(Long accountId, LocalDate start, LocalDate end) {
+        return transactionRepository.findByAccountIdAndDateBetween(accountId, start, end);
+    }
+
     private void validateExistsAndIsActive(Long id) throws GeneralException {
         boolean result = transactionRepository.existsByIdAndStatusTrue(id);
         if (!result) throw new GeneralException("Transaction not found with id: " + id + ", or is already inactive");

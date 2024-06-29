@@ -1,5 +1,6 @@
 package com.tcs.transaction.mapper;
 
+import com.tcs.transaction.dto.ReportTransactionDto;
 import com.tcs.transaction.dto.TransactionDto;
 import com.tcs.transaction.dto.TransactionResponseDto;
 import com.tcs.transaction.entity.Transaction;
@@ -15,5 +16,6 @@ public interface TransactionMapper {
     TransactionResponseDto toResponseDto(Transaction transaction);
     List<TransactionResponseDto> toListResponseDto(List<Transaction> transactionList);
     Transaction toTransaction(TransactionDto transactionDto);
+    List<ReportTransactionDto> toReportDto (List<Transaction> transaction);
 
 }

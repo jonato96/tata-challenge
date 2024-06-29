@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public interface AccountRepository extends JpaRepository<Account, Long> {
 
@@ -19,5 +20,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     void updateBalance(@Param("balance") BigDecimal balance, @Param("id") Long id);
 
     boolean existsByIdAndStatusTrue(Long id);
+
+    List<Account> findByClientId(Long clientId);
 
 }

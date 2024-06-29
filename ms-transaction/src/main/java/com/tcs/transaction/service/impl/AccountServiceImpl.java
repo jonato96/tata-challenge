@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -52,7 +53,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public AccountResponseDto findById(Long id) throws GeneralException {
         Account accountFind = accountRepository.findById(id).orElseThrow( () -> new GeneralException("Account not found with id: " + id) );
-        ClientResponseDto clientResponse = customerClient.findById(accountFind.getId());
+        ClientResponseDto clientResponse = customerClient.findById(accountFind.getClientId());
         AccountResponseDto accountResponse = accountMapper.toResponseDto(accountFind);
         accountResponse.setClientName(clientResponse.getName());
         return accountResponse;
@@ -62,6 +63,11 @@ public class AccountServiceImpl implements AccountService {
     public Account validateAccount(Long id) throws GeneralException {
         validateExistsAndIsActive(id);
         return accountRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<Account> findByClientId(Long clientId) {
+        return accountRepository.findByClientId(clientId);
     }
 
     private void validateExistsAndIsActive(Long id) throws GeneralException {
